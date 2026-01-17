@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seyahat Acentesi Bütçe Yönetimi İnfografiği</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f9ff; 
+            color: #1e293b;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 350px;
+            max-height: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .step-card {
+            transition: transform 0.2s;
+        }
+        .step-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+    <!-- 
+    Source Material Analysis:
+    - Topic: Travel & Tour Organization Budgeting
+    - Key Sections: Concepts, Benefits, Approaches, Process, Sales, Controls, Cash Flow.
+    - Narrative: A flow from understanding basics to executing a complex financial cycle in a seasonal industry.
+    - Visual Choices:
+        1. Radar Chart: Comparing Budget Approaches (Flexibility vs Cost).
+        2. Mixed Chart: Sales forecast (Seasonality is key in tourism).
+        3. Doughnut Chart: Expense distribution.
+        4. Floating Bar (Waterfall): Cash Flow structure.
+        5. Grouped Bar: Budget Control (Variance).
+    - Palette: "Brilliant Blues & Energetic" (Cyan/Blue/Amber) to match the dynamic tourism sector.
+    -->
+    <!-- 
+    Palette Selection: 
+    Primary: #0ea5e9 (Sky Blue)
+    Secondary: #f59e0b (Amber)
+    Accent: #3b82f6 (Royal Blue)
+    Background: #f0f9ff (Alice Blue)
+    Text: #1e293b (Slate)
+    NO SVG USED. NO MERMAID JS USED.
+    -->
+</head>
+<body class="bg-slate-50">
+
+    <!-- Hero Section -->
+    <header class="bg-gradient-to-r from-blue-600 to-cyan-500 text-white p-8 md:p-12 shadow-lg mb-8">
+        <div class="max-w-6xl mx-auto text-center">
+            <h1 class="text-4xl md:text-6xl font-black tracking-tight mb-4">SEYAHAT VE TURİZMDE BÜTÇE YÖNETİMİ</h1>
+            <p class="text-xl md:text-2xl font-light opacity-90 max-w-3xl mx-auto">
+                Finansal sürdürülebilirlik, risk yönetimi ve nakit akışı stratejileri ile turizm operasyonlarında başarıya giden yol haritası.
+            </p>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 pb-12 space-y-12">
+
+        <!-- Introduction Section -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-amber-500">
+                <h2 class="text-2xl font-bold text-blue-800 mb-3">Neden Bütçeleme?</h2>
+                <p class="text-slate-600 leading-relaxed">
+                    Turizm sektörü; mevsimsellik, döviz kurları ve küresel olaylardan anlık etkilenen dinamik bir yapıya sahiptir. Bütçeleme, sadece bir tahmin değil, acentenin finansal rotasını çizen bir <strong>erken uyarı sistemidir</strong>.
+                </p>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-blue-50 p-4 rounded-lg text-center">
+                    <div class="text-4xl font-bold text-blue-600 mb-1">Risk</div>
+                    <div class="text-sm font-semibold text-slate-500 uppercase">Yönetimi</div>
+                </div>
+                <div class="bg-amber-50 p-4 rounded-lg text-center">
+                    <div class="text-4xl font-bold text-amber-500 mb-1">Nakit</div>
+                    <div class="text-sm font-semibold text-slate-500 uppercase">Kontrolü</div>
+                </div>
+                <div class="bg-cyan-50 p-4 rounded-lg text-center">
+                    <div class="text-4xl font-bold text-cyan-600 mb-1">KPI</div>
+                    <div class="text-sm font-semibold text-slate-500 uppercase">Takibi</div>
+                </div>
+                <div class="bg-emerald-50 p-4 rounded-lg text-center">
+                    <div class="text-4xl font-bold text-emerald-600 mb-1">Kâr</div>
+                    <div class="text-sm font-semibold text-slate-500 uppercase">Maksimizasyonu</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Basic Concepts: Fixed vs Variable -->
+        <section>
+            <div class="mb-6">
+                <h2 class="text-3xl font-bold text-slate-800 border-b-2 border-blue-200 pb-2 inline-block">Bütçe ile İlgili Temel Kavramlar</h2>
+                <p class="mt-4 text-slate-600">
+                    Bir tur operatörünün maliyet yapısını anlamak, doğru fiyatlandırma (costing) yapabilmenin temelidir. Giderler, operasyon hacmine göre davranış biçimlerine ayrılır.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="bg-blue-600 p-4 text-white font-bold text-lg text-center">Sabit Maliyetler (Fixed Costs)</div>
+                    <div class="p-6">
+                        <p class="text-sm text-slate-500 mb-4 text-center">Tur satılsa da satılmasa da gerçekleşen giderlerdir.</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center bg-blue-50 p-3 rounded">
+                                <span class="text-2xl mr-3">🏢</span>
+                                <span class="font-medium text-slate-700">Ofis Kirası & Genel Giderler</span>
+                            </li>
+                            <li class="flex items-center bg-blue-50 p-3 rounded">
+                                <span class="text-2xl mr-3">💻</span>
+                                <span class="font-medium text-slate-700">GDS & CRM Lisans Ücretleri</span>
+                            </li>
+                            <li class="flex items-center bg-blue-50 p-3 rounded">
+                                <span class="text-2xl mr-3">👥</span>
+                                <span class="font-medium text-slate-700">Çekirdek Personel Maaşları</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="bg-amber-500 p-4 text-white font-bold text-lg text-center">Değişken Maliyetler (Variable Costs)</div>
+                    <div class="p-6">
+                        <p class="text-sm text-slate-500 mb-4 text-center">Doğrudan pax (yolcu) sayısı ile artıp azalan giderlerdir.</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center bg-amber-50 p-3 rounded">
+                                <span class="text-2xl mr-3">✈️</span>
+                                <span class="font-medium text-slate-700">Uçak Bileti & Konaklama</span>
+                            </li>
+                            <li class="flex items-center bg-amber-50 p-3 rounded">
+                                <span class="text-2xl mr-3">🎫</span>
+                                <span class="font-medium text-slate-700">Müze Girişleri & Transfer</span>
+                            </li>
+                            <li class="flex items-center bg-amber-50 p-3 rounded">
+                                <span class="text-2xl mr-3">🤝</span>
+                                <span class="font-medium text-slate-700">Acente Satış Komisyonları</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Budget Approaches Chart -->
+        <section class="bg-white p-8 rounded-2xl shadow-md">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-800 mb-4">Bütçeleme Yaklaşımları</h2>
+                    <p class="text-slate-600 mb-6">
+                        Acenteler yapılarına göre farklı yöntemler seçebilir. Geleneksel yöntemler hızı artırırken, sıfır tabanlı bütçeleme verimliliği maksimize eder.
+                    </p>
+                    <ul class="space-y-4 text-sm">
+                        <li class="border-l-4 border-blue-500 pl-4">
+                            <strong class="text-slate-900 block text-lg">Geleneksel (Artımsal)</strong>
+                            <span class="text-slate-500">Geçmiş yıl verilerine enflasyon/büyüme oranı eklenir. Hızlıdır ancak verimsizlikleri sürdürebilir.</span>
+                        </li>
+                        <li class="border-l-4 border-cyan-500 pl-4">
+                            <strong class="text-slate-900 block text-lg">Sıfır Tabanlı (Zero-Based)</strong>
+                            <span class="text-slate-500">Her gider kalemi sıfırdan gerekçelendirilir. Maliyet optimizasyonu sağlar, zaman alıcıdır.</span>
+                        </li>
+                        <li class="border-l-4 border-amber-500 pl-4">
+                            <strong class="text-slate-900 block text-lg">Esnek Bütçeleme</strong>
+                            <span class="text-slate-500">Farklı satış hacimlerine (Düşük/Orta/Yüksek Sezon) göre otomatik güncellenen dinamik bütçelerdir.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="flex flex-col items-center">
+                    <h3 class="text-center font-bold text-slate-500 mb-2">Yöntem Karşılaştırma Analizi</h3>
+                    <div class="chart-container">
+                        <canvas id="approachesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Budgeting Process Steps -->
+        <section>
+            <h2 class="text-3xl font-bold text-slate-800 mb-8 text-center">Bütçeleme Sürecinin Aşamaları</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="step-card bg-white p-6 rounded-lg shadow border-t-4 border-blue-500 text-center">
+                    <div class="text-5xl mb-4">📊</div>
+                    <h3 class="font-bold text-lg mb-2">1. Analiz & Tahmin</h3>
+                    <p class="text-sm text-slate-500">Pazar trendleri, rakip analizi ve geçmiş yıl verilerinin incelenerek hedeflerin belirlenmesi.</p>
+                </div>
+                <div class="step-card bg-white p-6 rounded-lg shadow border-t-4 border-cyan-500 text-center">
+                    <div class="text-5xl mb-4">📝</div>
+                    <h3 class="font-bold text-lg mb-2">2. Departman Bütçeleri</h3>
+                    <p class="text-sm text-slate-500">Operasyon, pazarlama ve satış departmanlarının kendi gider ve gelir kalemlerini oluşturması.</p>
+                </div>
+                <div class="step-card bg-white p-6 rounded-lg shadow border-t-4 border-amber-500 text-center">
+                    <div class="text-5xl mb-4">🔄</div>
+                    <h3 class="font-bold text-lg mb-2">3. Konsolidasyon</h3>
+                    <p class="text-sm text-slate-500">Tüm alt bütçelerin birleştirilerek "Master Bütçe"nin oluşturulması ve nakit akışına etkisinin ölçülmesi.</p>
+                </div>
+                <div class="step-card bg-white p-6 rounded-lg shadow border-t-4 border-emerald-500 text-center">
+                    <div class="text-5xl mb-4">✅</div>
+                    <h3 class="font-bold text-lg mb-2">4. Onay & Kontrol</h3>
+                    <p class="text-sm text-slate-500">Yönetim onayı ve yıl boyunca gerçekleşen ile hedeflenen verilerin düzenli karşılaştırılması.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sales Budget & Seasonality -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-md">
+                <div class="mb-4 flex justify-between items-end">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800">Satış Bütçesi ve Mevsimsellik</h2>
+                        <p class="text-sm text-slate-500">Turizmde nakit akışı mevsime göre dalgalanır. Satış bütçesi, pax (yolcu) sayısı ve kişi başı gelir (Yield) tahminlerine dayanır.</p>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="salesChart"></canvas>
+                </div>
+            </div>
+            <div class="space-y-6">
+                <div class="bg-blue-600 text-white p-6 rounded-xl shadow-md">
+                    <h3 class="font-bold text-xl mb-2">Satış Bütçesi Faktörleri</h3>
+                    <ul class="text-sm space-y-3 opacity-90">
+                        <li>• <strong>Kapasite:</strong> Uçak ve otel kontenjanları (Allotment).</li>
+                        <li>• <strong>Fiyatlandırma:</strong> Erken rezervasyon indirimleri ve dinamik fiyatlar.</li>
+                        <li>• <strong>Döviz Kuru:</strong> Maliyetler döviz, gelirler TL ise kur riski.</li>
+                        <li>• <strong>Pazar Dağılımı:</strong> İç pazar vs. Incoming dengesi.</li>
+                    </ul>
+                </div>
+                <!-- Other Budgets Pie Chart -->
+                <div class="bg-white p-6 rounded-xl shadow-md flex flex-col items-center">
+                    <h3 class="font-bold text-slate-800 mb-2 w-full text-left">Gider Bütçesi Dağılımı</h3>
+                    <div class="chart-container" style="height: 250px;">
+                        <canvas id="expenseChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Budget Control & Variance -->
+        <section class="bg-white p-8 rounded-2xl shadow-md">
+            <h2 class="text-3xl font-bold text-slate-800 mb-2">Bütçe Kontrolü: Varyans Analizi</h2>
+            <p class="text-slate-600 mb-6 max-w-3xl">
+                Planlanan bütçe ile gerçekleşen rakamlar arasındaki farkların (sapmaların) analizi, operasyonel verimliliği ölçer. Negatif sapmalar anında düzeltici faaliyet gerektirir.
+            </p>
+            <div class="chart-container">
+                <canvas id="varianceChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Cash Flow Statement Structure -->
+        <section>
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-slate-800">Nakit Akış Tablosunun Yapısı</h2>
+                <p class="text-slate-500 mt-2">Kâr etmek, nakit sahibi olmak demek değildir. Turizmde tahsilat ve ödeme vadeleri hayati önem taşır.</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-lg">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 text-center">
+                    <div class="p-4 bg-emerald-50 rounded-lg border border-emerald-100">
+                        <strong class="block text-emerald-700 text-lg">İşletme Faaliyetleri</strong>
+                        <span class="text-xs text-slate-500">Tur satışları, otel ödemeleri, personel maaşları. (Ana Nakit Kaynağı)</span>
+                    </div>
+                    <div class="p-4 bg-amber-50 rounded-lg border border-amber-100">
+                        <strong class="block text-amber-700 text-lg">Yatırım Faaliyetleri</strong>
+                        <span class="text-xs text-slate-500">Transfer aracı alımı, ofis demirbaşları, yazılım yatırımları.</span>
+                    </div>
+                    <div class="p-4 bg-blue-50 rounded-lg border border-blue-100">
+                        <strong class="block text-blue-700 text-lg">Finansman Faaliyetleri</strong>
+                        <span class="text-xs text-slate-500">Kredi kullanımları, sermaye artırımı, kâr payı dağıtımı.</span>
+                    </div>
+                </div>
+                <!-- Waterfall / Cash Flow Viz -->
+                <div class="chart-container">
+                    <canvas id="cashFlowChart"></canvas>
+                </div>
+                <div class="mt-4 text-center text-sm text-slate-400">
+                    *Grafik: Bir seyahat acentesinin yıllık temsili nakit akış yapısı (Açılış Bakiyesi -> İşletme, Yatırım, Finansman Etkileri -> Kapanış).
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-slate-300 py-12 text-center">
+        <p class="font-light">© 2024 Seyahat ve Tur Organizasyonu Finansal Yönetim Rehberi.</p>
+        <p class="text-sm mt-2 opacity-50">Veriler eğitim amaçlı simülasyondur.</p>
+    </footer>
+
+    <script>
+        // Utility: Wrap labels for Chart.js
+        function wrapLabels(labels) {
+            return labels.map(label => {
+                if (label.length <= 16) return label;
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = words[0];
+                for (let i = 1; i < words.length; i++) {
+                    if ((currentLine + " " + words[i]).length < 16) {
+                        currentLine += " " + words[i];
+                    } else {
+                        lines.push(currentLine);
+                        currentLine = words[i];
+                    }
+                }
+                lines.push(currentLine);
+                return lines;
+            });
+        }
+
+        // Shared Tooltip Config
+        const tooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        // --- Chart 1: Approaches (Radar) ---
+        const ctxRadar = document.getElementById('approachesChart').getContext('2d');
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: wrapLabels(['Esneklik', 'Maliyet Kontrolü', 'Hazırlama Hızı', 'Detay Seviyesi', 'Yenilikçilik']),
+                datasets: [{
+                    label: 'Geleneksel Bütçe',
+                    data: [40, 50, 90, 40, 30],
+                    backgroundColor: 'rgba(37, 99, 235, 0.2)',
+                    borderColor: '#2563EB',
+                    pointBackgroundColor: '#2563EB',
+                }, {
+                    label: 'Sıfır Tabanlı Bütçe',
+                    data: [60, 95, 20, 90, 85],
+                    backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                    borderColor: '#F59E0B',
+                    pointBackgroundColor: '#F59E0B',
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: tooltipConfig,
+                    legend: { position: 'bottom' }
+                },
+                scales: {
+                    r: {
+                        angleLines: { display: true },
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                }
+            }
+        });
+
+        // --- Chart 2: Sales & Seasonality (Mixed Bar/Line) ---
+        const ctxSales = document.getElementById('salesChart').getContext('2d');
+        new Chart(ctxSales, {
+            type: 'bar',
+            data: {
+                labels: wrapLabels(['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık']),
+                datasets: [{
+                    label: 'Pax Sayısı (Kişi)',
+                    data: [150, 200, 350, 600, 900, 1200, 1500, 1450, 1100, 700, 300, 250],
+                    backgroundColor: '#0ea5e9',
+                    order: 2
+                }, {
+                    label: 'Gelir Hedefi (x1000 TL)',
+                    data: [300, 450, 800, 1500, 2500, 3800, 4800, 4600, 3200, 1800, 700, 550],
+                    borderColor: '#f59e0b',
+                    backgroundColor: 'rgba(245, 158, 11, 0.5)',
+                    type: 'line',
+                    order: 1,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: tooltipConfig,
+                    legend: { position: 'top' }
+                }
+            }
+        });
+
+        // --- Chart 3: Expense Distribution (Doughnut) ---
+        const ctxExpense = document.getElementById('expenseChart').getContext('2d');
+        new Chart(ctxExpense, {
+            type: 'doughnut',
+            data: {
+                labels: wrapLabels(['Tedarikçi Ödemeleri (Otel/Uçak)', 'Personel Maaşları', 'Pazarlama & Reklam', 'Vergi & Lisanslar', 'Genel Giderler']),
+                datasets: [{
+                    data: [65, 15, 10, 5, 5],
+                    backgroundColor: ['#0ea5e9', '#3b82f6', '#f59e0b', '#10b981', '#64748b'],
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: tooltipConfig,
+                    legend: { position: 'right' }
+                }
+            }
+        });
+
+        // --- Chart 4: Variance Analysis (Grouped Bar) ---
+        const ctxVariance = document.getElementById('varianceChart').getContext('2d');
+        new Chart(ctxVariance, {
+            type: 'bar',
+            data: {
+                labels: wrapLabels(['Satış Gelirleri', 'Otel Giderleri', 'Ulaşım Giderleri', 'Pazarlama', 'Net Kâr']),
+                datasets: [{
+                    label: 'Bütçelenen',
+                    data: [10000, 6000, 2000, 500, 1500],
+                    backgroundColor: '#cbd5e1'
+                }, {
+                    label: 'Gerçekleşen',
+                    data: [9200, 5800, 2100, 450, 850],
+                    backgroundColor: (ctx) => {
+                        // Color logic based on variance could go here, simplified to static for now
+                        return ctx.raw < 10000 && ctx.dataIndex === 0 ? '#ef4444' : '#3b82f6';
+                    }
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: tooltipConfig
+                }
+            }
+        });
+
+        // --- Chart 5: Cash Flow Waterfall (Using Chart.js Floating Bars) ---
+        // Simulating waterfall: Start, +Operating, -Investing, +Financing, End
+        const ctxCashFlow = document.getElementById('cashFlowChart').getContext('2d');
+        new Chart(ctxCashFlow, {
+            type: 'bar',
+            data: {
+                labels: wrapLabels(['Dönem Başı Nakit', 'İşletme Nakit Girişi', 'Yatırım Çıkışları', 'Finansman Girişi', 'Dönem Sonu Nakit']),
+                datasets: [{
+                    label: 'Nakit Hareketi',
+                    // Data format: [min, max] for floating bars
+                    data: [
+                        [0, 200],      // Start: 0 to 200
+                        [200, 550],    // Operating: Add 350 (200 to 550)
+                        [400, 550],    // Investing: Subtract 150 (550 down to 400)
+                        [400, 480],    // Financing: Add 80 (400 to 480)
+                        [0, 480]       // End: 0 to 480
+                    ],
+                    backgroundColor: [
+                        '#64748b', // Start (Gray)
+                        '#10b981', // Operating (Green - Positive)
+                        '#ef4444', // Investing (Red - Negative)
+                        '#10b981', // Financing (Green - Positive)
+                        '#3b82f6'  // End (Blue)
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: tooltipConfig,
+                    legend: { display: false }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
